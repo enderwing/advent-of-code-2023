@@ -8,7 +8,7 @@ def main():
     # the test-input.txt file
     # if quickRun is true on program start, DayManager automatically selects quickDay and runs
     # the test-input.txt with no user input
-    quickDay = 3
+    quickDay = 4
     quickRun = False
     skipTest = False
 
