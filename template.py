@@ -5,6 +5,14 @@ def part2(f):
     return None
 
 
+def inputReader(f, strip=True, lower=False):
+    line = f.readline()
+    while line:
+        if strip: line = line.strip()
+        if lower: line = line.lower()
+        yield line
+        line = f.readline()
+
 def main():
     with open("inputs/aoc{yearday}-input.txt") as f:
         print("Input results:")

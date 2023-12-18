@@ -3,6 +3,26 @@ import importlib.util
 import sys
 
 
+year = 2023
+selectedDayNum = -1
+selectedDay = None
+curPrompt = "initial"
+userInput = ""
+def main():
+    global userInput
+    running = True
+    while running:
+        match curPrompt:
+            case "initial":
+                getInput("Enter a number (#) to select a day, or (C) to create a day. Enter (Q) anywhere else to return to this prompt. Enter (Q) here to quit.")
+            case "createDay":
+                getInput("Enter the day number (#)")
+            case "dayMenu":
+                getInput(f"Day {selectedDayNum}. Enter (R) to run on input data, (T) to run on test input data, or (S) to run on scratch file data. Enter (E) to reload the current day code.")
+            case _:
+                print("Not recognized.")
+        process_input()
+
 def getInput(prompt):
     global userInput
     print(prompt)
@@ -41,7 +61,6 @@ def process_input():
                 curPrompt = "dayMenu"
                 return
 
-
     if curPrompt == "createDay":
         try: numInput = int(userInput)
         except ValueError:
@@ -72,26 +91,6 @@ def process_input():
             return
     print("Input not recognized.")
 
-
-year = 2023
-selectedDayNum = -1
-selectedDay = None
-curPrompt = "initial"
-userInput = ""
-def main():
-    global userInput
-    running = True
-    while running:
-        match curPrompt:
-            case "initial":
-                getInput("Enter a number (#) to select a day, or (C) to create a day. Enter (Q) anywhere else to return to this prompt. Enter (Q) here to quit.")
-            case "createDay":
-                getInput("Enter the day number (#)")
-            case "dayMenu":
-                getInput(f"Day {selectedDayNum}. Enter (R) to run on input data, (T) to run on test input data, or (S) to run on scratch file data. Enter (E) to reload the current day code.")
-            case _:
-                print("Not recognized.")
-        process_input()
 
 def createDay(dayNum):
     with open(f"aoc{year}-{dayNum}.py", "x") as f:
