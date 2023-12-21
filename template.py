@@ -13,6 +13,12 @@ def inputReader(f, strip=True, lower=False):
         yield line
         line = f.readline()
 
+def getFullInput(f, strip=True, lower=False):
+    lines = []
+    for line in inputReader(f, strip, lower):
+        lines.append(line)
+    return lines
+
 def main():
     with open("inputs/aoc{yearday}-input.txt") as f:
         print("Input results:")
