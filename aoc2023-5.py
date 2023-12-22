@@ -10,23 +10,43 @@ def part1(f):
 
     # make list of conversion ranges
     # format [[(source1lower, source1upper), (destination1lower, destination2lower),...],...]
-    conversionList = []
-    tempConversion = []
+    conversionSources = []
+    conversionDestinations = []
+    tempSources = []
+    tempDestinations = []
     for line in lines:
         if not line:
-            conversionList.append(tempConversion)
-            tempConversion.clear()
+            conversionSources.append(tempSources.copy())
+            conversionDestinations.append(tempDestinations.copy())
+            tempSources.clear()
+            tempDestinations.clear()
         elif line[0].isalpha():
             continue
         else:
-            nums = list(map(lambda x: int(x), line.split(" ")))
-            tempConversion.append((nums[1], nums[1]+nums[2]-1))
-            tempConversion.append((nums[0], nums[0]+nums[2]-1))
-        lowestLocation = 0
-        for seed in seeds:
+            nums = list(map(int, line.split(" ")))
+            tempSources.append((nums[1], nums[1]+nums[2]-1))
+            tempDestinations.append(nums[0])
 
+    lowestLocation = 999999999999
+    for seed in seeds:
+        currentVal = seed
+        # trace through all conversions
+        for s, source in enumerate(conversionSources):
+            offset = 0
+            mappingIndex = -1
+            for m, mapping in enumerate(source):
+                if mapping[0] <= currentVal <= mapping[1]:
+                    offset = currentVal - mapping[0]
+                    mappingIndex = m
+                    break
+            if mappingIndex > -1:
+                currentVal = conversionDestinations[s][mappingIndex]
+                currentVal += offset
+        if currentVal < lowestLocation: lowestLocation = currentVal
 
-    return None
+    # already tried:
+    # 144435049
+    return lowestLocation
 
 def part2(f):
     return None
