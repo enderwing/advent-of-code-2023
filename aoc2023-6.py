@@ -23,7 +23,6 @@ def part2(f):
     output = 1
     currentRecordButtonTime = math.trunc((-math.sqrt(raceTime ** 2 - 4 * record) + raceTime) / 2)
     winningCardinality = (raceTime / 2 - currentRecordButtonTime) * 2 - 1
-    print(f"race: current {currentRecordButtonTime}, winning {winningCardinality}")
     output *= winningCardinality
 
     return int(output)
