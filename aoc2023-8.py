@@ -1,3 +1,6 @@
+import math
+
+
 def part1(f):
     puzzleInput = getFullInput(f)
 
@@ -22,9 +25,7 @@ def part1(f):
 
 def part2(f):
     puzzleInput = getFullInput(f)
-
     instructions = puzzleInput[0]
-
     mappings = {}
     startNodes = set()
     endNodes = set()
@@ -34,40 +35,25 @@ def part2(f):
             startNodes.add(line[:3])
         elif line[2] == 'Z':
             endNodes.add(line[:3])
-    print(startNodes)
-    print(endNodes)
 
-    # TODO: current idea, approach this similar to the very tall tetris from last year
-    # i.e. find how many steps it takes each one to repeat then find the LCM of those step counts (or something similar)
-    # code below shows steps from each starting node to an ending node, does not calculate a full loop back to start
-    for currentNode in startNodes:
-        currentNodes = set()
-        currentNodes.add(currentNode)
-        print("current node", currentNodes)
+    loopDistances = []
+    for searchingNode in startNodes:
         steps = 1
+        currentLocation = searchingNode
         searching = True
-        # currentNodes = startNodes
         while searching:
             for direction in instructions:
-                newNodes = set()
-                # print(steps, direction, currentNodes)
-                for node in currentNodes:
-                    newNodes.add(mappings.get(node)[0 if direction == 'L' else 1])
-                currentNodes = newNodes
-                done = True
-                # print(currentNodes)
-                for node in currentNodes:
-                    if node not in endNodes:
-                        # print("not ending node")
-                        done = False
+                currentLocation = mappings.get(currentLocation)[0 if direction == 'L' else 1]
+                if currentLocation in endNodes:
+                    if searching:
+                        searching = False
+                        loopDistances.append(steps)
                         break
-                if done:
-                    searching = False
-                    break
                 steps += 1
-        print("node finished", currentNode, steps)
 
-    return steps
+    lcmSteps = math.lcm(*loopDistances)
+
+    return lcmSteps
 
 
 def inputReader(f, strip=True, lower=False):

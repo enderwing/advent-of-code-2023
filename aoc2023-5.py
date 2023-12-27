@@ -1,4 +1,5 @@
 import re
+import sys
 
 
 def part1(f):
@@ -9,7 +10,6 @@ def part1(f):
     del lines[0:2]
 
     # make list of conversion ranges
-    # format [[(source1lower, source1upper), (destination1lower, destination2lower),...],...]
     conversionSources = []
     conversionDestinations = []
     tempSources = []
@@ -26,8 +26,12 @@ def part1(f):
             nums = list(map(int, line.split(" ")))
             tempSources.append((nums[1], nums[1]+nums[2]-1))
             tempDestinations.append(nums[0])
+    conversionSources.append(tempSources.copy())
+    conversionDestinations.append(tempDestinations.copy())
+    tempSources.clear()
+    tempDestinations.clear()
 
-    lowestLocation = 999999999999
+    lowestLocation = sys.maxsize
     for seed in seeds:
         currentVal = seed
         # trace through all conversions
@@ -39,16 +43,19 @@ def part1(f):
                     offset = currentVal - mapping[0]
                     mappingIndex = m
                     break
+
             if mappingIndex > -1:
                 currentVal = conversionDestinations[s][mappingIndex]
                 currentVal += offset
+
         if currentVal < lowestLocation: lowestLocation = currentVal
 
     # already tried:
-    # 144435049
+    # 144435049 - too low
     return lowestLocation
 
 def part2(f):
+
     return None
 
 
